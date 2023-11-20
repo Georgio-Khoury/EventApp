@@ -1,0 +1,22 @@
+/* Styles for the container holding the navigation and card */
+.container {
+    display: flex; /* Use flexbox for layout */
+  }
+  
+  /* Styles for the navigation (your designed navbar) */
+  .navbar {
+    background-color: #333;
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+  }
+  
+  /* Styles for the card container */
+  .card-container {
+    margin-left: 100px; /* Move the card container away from the navbar's width */
+    padding: 20px; /* Add some padding for spacing */
+  }
+  
