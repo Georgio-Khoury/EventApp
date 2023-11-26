@@ -14,7 +14,7 @@ export const LoginForm = () => {
 
         for(var i = 0;i<creds.length;i++){
             if((creds[i][0]=== username) && (creds[i][1] === password)){
-                navigate('/Main')
+                navigate('/Events')
                 flag=true
             }
         
@@ -67,13 +67,12 @@ export const LoginForm = () => {
         </div>
 
 
-    </div>
+   
 
    
             
 
-            <div className="form-link">
-                <span>Already have an account? <Link to="/LoginForm"></Link></span>
+            
             </div>
         
 

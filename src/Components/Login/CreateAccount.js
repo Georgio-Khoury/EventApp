@@ -8,7 +8,7 @@ import {Link,useNavigate} from 'react-router-dom'
     const [confirm,setConfirm] = useState("");
     const navigate = useNavigate();
     const handleSubmit=(e)=>{
-            navigate('/Main')
+            navigate('/Events')
     }
  
  return(
