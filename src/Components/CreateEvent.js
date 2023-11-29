@@ -5,6 +5,9 @@ import './CreateEvent.css'
 function CreateEvent() {
   
   const [eventName,seteventName] = useState("")
+  const [eventDate,seteventDate] = useState("")
+  const [price,setPrice]= useState("");
+
   const handleSubmit =()=>{
     //send to the server
   }
@@ -19,6 +22,9 @@ function CreateEvent() {
       window.open(url,'_blank');
       console.log('blyat')
   }
+  function create(){
+
+  }
   
   return (
     <div>
@@ -29,8 +35,13 @@ function CreateEvent() {
             <input type="text" placeholder='Event Name' value={eventName} onChange={(e)=>{seteventName(e.target.value)}}></input>
           </div>
           <div>
-            
+            <input type="text" placeholder='Ticket Price' value={price} onChange={(e)=>{setPrice(e.target.value)}}></input>
           </div>
+          <div>
+          <input type="file"
+        accept="image/*" name="image" />
+          </div>
+          <button onClick={create()}>Create Event</button>
         </form>
 
 
