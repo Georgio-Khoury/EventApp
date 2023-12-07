@@ -7,6 +7,7 @@ import { Navigation } from './Components/Navigation';
 import Account from './Components/Account';
 import Subscription from './Components/Subscription';
 import CreateEvent from './Components/CreateEvent';
+import CardDetails from './Components/Cards/CardDetails';
 
 function App() {
   return (
@@ -18,10 +19,11 @@ function App() {
       <Route path="/" element={<LoginForm />}/>
       <Route path="/Events" element={<Events />}></Route>
       <Route path="/CreateAccount" element={<CreateAccount />}></Route>
-      
+      <Route path='/CardDetails/:eventName/:location/:price/:picture' Component={CardDetails}></Route>
       <Route path="/Account" Component={Account}/>
       <Route path="/Subscription" Component={Subscription}/>
       <Route path="/CreateEvent" element={<CreateEvent/>}/>
+
      </Routes>
       
       

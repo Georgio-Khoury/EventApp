@@ -30,7 +30,7 @@ function CreateEvent() {
     <div>
         <Navigation />
         <div className="createform">
-        <form onSubmit={handleSubmit()}>
+        <form onSubmit={handleSubmit}>
           <div>
             <input type="text" placeholder='Event Name' value={eventName} onChange={(e)=>{seteventName(e.target.value)}}></input>
           </div>
@@ -41,7 +41,7 @@ function CreateEvent() {
           <input type="file"
         accept="image/*" name="image" />
           </div>
-          <button onClick={create()}>Create Event</button>
+          <button onClick={create}>Create Event</button>
         </form>
 
 
