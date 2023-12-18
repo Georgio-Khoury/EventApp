@@ -4,22 +4,24 @@ import React from 'react';
 import './Card.css';
 import { useNavigate } from 'react-router-dom';
 
-const Card = ({ events }) => {
+const Card = ({ event }) => {
+  const picture = require('../../assets/image.png')
   const navigate = useNavigate();
-   const handleclick=(eventName,location,price,picture)=>{
+   const handleclick=(eventName,location,price,picture,capacity)=>{
     console.log(picture)
     const image = btoa(picture)
     console.log(image)
-        navigate(`/CardDetails/${eventName}/${location}/${price}/${image}`)
+        navigate(`/CardDetails/${eventName}/${location}/${price}/${image}/${capacity}`)
   }
   return (
     <div className="cards-container" >
-      {events.map((event, index) => (
-        <div key={index} className="card" onClick={()=>handleclick(event.name,event.location,event.price,event.picture)}>
-          <img src={event.picture} alt={event.name} className="event-picture" />
+      {event.map((event, index) => (
+        <div key={index} className="card" onClick={()=>handleclick(event.name,event.location,event.price,picture,event.capacity)}>
+          <img src={picture} alt={event.name} className="event-picture" />
           <div className="event-details">
             <h2>{event.name}</h2>
-            <p>{event.location}</p>
+            
+            <p>Capacity: {event.capacity}</p>
           </div>
         </div>
       ))}

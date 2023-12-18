@@ -1,16 +1,58 @@
-import React from 'react'
+import React ,{useState} from 'react'
 import { Navigation } from './Navigation'
+import { useNavigate } from 'react-router-dom'
 
 function Subscription() {
-  function subscribe(){
+  const navigate = useNavigate()
+  const subnum=1
+  //const [username, setusername] = useState();
+  const [phone, setphone] = useState();
+  const [message, setmessage] = useState();
+  const [email, setemail] = useState();
+  const userObject = JSON.parse(localStorage.getItem('user'));
+  const username = userObject.name
+ async function subscribe(e){
+  e.preventDefault()
+  
+  
+      const response = await fetch('http://127.0.0.1:5000/addSubscription',
+      {
+        method:'POST',
+        headers:{
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        body:
+          JSON.stringify({username,subnum,phone,email})
+        ,
+      })
+      const data = await response.json()
+      if (response.ok){
+        const userObject = JSON.parse(localStorage.getItem('user'));
+        userObject.status=true
+        localStorage.setItem("user", JSON.stringify(userObject));
+        console.log(userObject.status)
+        setmessage(data)
+        //navigate('/Account')
+      }
 
   }
   return (
     <>
     <div><Navigation/></div>
     <div className="content">
-      <h1>Subscribe to our Event Creator to post your events for only 50$</h1>
+      <form onSubmit={subscribe}>
+        <div>
+        <input type='text' placeholder="Business Phone" value={phone} onChange={(e)=>{setphone(e.target.value)}}></input>
+        </div>
+        <div>
+          <input type='text' placeholder='Business Email' value={email} onChange={(e)=>{setemail(e.target.value)}}></input>
+        </div>
       <button className="Subsribe" onClick={subscribe}>Subscribe</button>
+      {message&&<p>{message}</p>}
+      </form>
+  
+      
     </div>
     </>
   )

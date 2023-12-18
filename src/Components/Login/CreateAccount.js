@@ -4,11 +4,28 @@ import {Link,useNavigate} from 'react-router-dom'
 
  function CreateAccount(){
     const [username,setUsername]= useState("");
+    const [errormsg, seterrormsg] = useState();
     const [password,setPassword] = useState("");
     const [confirm,setConfirm] = useState("");
-    const navigate = useNavigate();
-    const handleSubmit=(e)=>{
-            navigate('/Events')
+    const [dob, setdob] = useState("");
+    const navigate = useNavigate("");
+    const handleSubmit= async (e)=>{
+        e.preventDefault()
+            const response = await fetch("http://127.0.0.1:5000/addEPlanner",{
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                  },
+                  body: JSON.stringify({username,password,dob})
+            })
+            const data = await response.json()
+            if(response.ok)
+            if(data===true){
+            navigate('/Account')
+            }else{
+                seterrormsg(data)
+            }
     }
  
  return(

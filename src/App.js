@@ -19,7 +19,7 @@ function App() {
       <Route path="/" element={<LoginForm />}/>
       <Route path="/Events" element={<Events />}></Route>
       <Route path="/CreateAccount" element={<CreateAccount />}></Route>
-      <Route path='/CardDetails/:eventName/:location/:price/:picture' Component={CardDetails}></Route>
+      <Route path='/CardDetails/:eventName/:location/:price/:picture/:capacity' Component={CardDetails}></Route>
       <Route path="/Account" Component={Account}/>
       <Route path="/Subscription" Component={Subscription}/>
       <Route path="/CreateEvent" element={<CreateEvent/>}/>

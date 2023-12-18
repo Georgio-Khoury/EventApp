@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import './loginform.css';
 
@@ -6,23 +6,91 @@ export const LoginForm = () => {
     const[username,setUsername] = useState('')
     const[password,setPassword] = useState('')
     const[errormsg,setErrormsg] = useState('');
-    var flag=false;
+    var status=false
+   // const[islog,setislog]= useState(true)
     const navigate = useNavigate();
-    const creds = [['1','1'],['admin','admin'],['123','123'],['543','543']]
-    const handleSubmit=(e)=>{
-        e.preventDefault()//prevents default behavior of submission
+    //useEffect(isloggedIn,[islog, navigate])
 
-        for(var i = 0;i<creds.length;i++){
-            if((creds[i][0]=== username) && (creds[i][1] === password)){
-                navigate('/Events')
-                flag=true
+    // function isloggedIn(){
+    //   console.log(islog)
+    //   if(islog)
+    //     navigate('/Events')
+    // }
+    const handleSubmit = async (e) => {
+      e.preventDefault()
+       
+        setErrormsg('');
+    
+        try {
+          const response = await fetch('http://127.0.0.1:5000/auth', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+            body: JSON.stringify({ username,password }),
+          });
+    
+          const data = await response.json();
+    
+          if (response.ok) {
+            
+            //setPassword(data.password);
+           
+            if(data===true){
+              
+              const response = await fetch('http://127.0.0.1:5000/status',{
+                method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+           body:JSON.stringify({username})
+              })
+              const stat = await response.json()
+              if(response.ok){
+                console.log(stat)
+                if(stat===true){
+                status=true
+                }
+              }
+              localStorage.setItem("user",JSON.stringify({"name":username,"pass":password,"status":status}));
+            navigate('/Events')
             }
+           else {
+            
+            
+            setErrormsg(data||'Failed to retrieve password');
+          }
+        }
+        } catch (error) {
+          setPassword(''); 
+          setErrormsg('Error occurred while fetching data');
+          console.error('Error :', error);
+        }
+      };
+     
+
+    
+   
+   
+    // var flag=false;
+
+    // const creds = [['1','1'],['admin','admin'],['123','123'],['543','543']]
+    // const handleSubmit=(e)=>{
+    //     e.preventDefault()//prevents default behavior of submission
+
+    //     for(var i = 0;i<creds.length;i++){
+    //         if((creds[i][0]=== username) && (creds[i][1] === password)){
+    //             navigate('/Events')
+    //             flag=true
+    //         }
         
 
-        }
-    if(!flag)
-        setErrormsg("Incorrect username or password")
-    }
+    //     }
+    // if(!flag)
+    //     setErrormsg("Incorrect username or password")
+    // }
   return (
     <section className="container forms">
     <div className="form login">
@@ -48,13 +116,11 @@ export const LoginForm = () => {
                     value={password}
                     onChange={(e) => {setPassword(e.target.value)}}
                     />
-                    <i className='bx bx-hide eye-icon'></i>
+                    
                 </div>
                 {errormsg && <p style={{color:'red'}}>{errormsg}</p>}
                 
-                <div className="form-link">
-                    Forgot password?
-                </div>
+                
 
                 <div className="field button-field">
                     <button>Login</button>
@@ -62,7 +128,7 @@ export const LoginForm = () => {
             </form>
 
             <div className="form-link">
-                <Link to="/CreateAccount"><span>Don't have an account? </span></Link>
+                <Link to="http://localhost:3000/CreateAccount"><span>Don't have an account? </span></Link>
             </div>
         </div>
 
