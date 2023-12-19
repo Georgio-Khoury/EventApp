@@ -16,7 +16,7 @@ def connect_to_database():
         db = mysql.connector.connect(
             host="localhost",
             user="root",
-            passwd="",
+            passwd="d",
             database="App"
         )
         print("Connected to the database successfully.")
