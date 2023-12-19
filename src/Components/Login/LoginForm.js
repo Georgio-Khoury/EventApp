@@ -6,6 +6,7 @@ export const LoginForm = () => {
     const[username,setUsername] = useState('')
     const[password,setPassword] = useState('')
     const[errormsg,setErrormsg] = useState('');
+    
     var status=false
    // const[islog,setislog]= useState(true)
     const navigate = useNavigate();
@@ -53,8 +54,44 @@ export const LoginForm = () => {
                 if(stat===true){
                 status=true
                 }
+                const response = await fetch('http://127.0.0.1:5000/fn',{
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                  },
+                 body:JSON.stringify({username})
+                })
+                var fndata = await response.json()
+                if(response.ok)
+                var  fn = fndata
+
+                const res= await fetch('http://127.0.0.1:5000/ln',{
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                  },
+                 body:JSON.stringify({username})
+                })
+                var lndata = await res.json()
+                if(res.ok)
+                var  ln = lndata
+
+                const resp = await fetch('http://127.0.0.1:5000/fn',{
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                  },
+                 body:JSON.stringify({username})
+                })
+                var pndata = await resp.json()
+                if(resp.ok)
+                var  pn = pndata
               }
-              localStorage.setItem("user",JSON.stringify({"name":username,"pass":password,"status":status}));
+              console.log(fn ,ln ,pn)
+              localStorage.setItem("user",JSON.stringify({"name":username,"pass":password,"status":status,"fn":fn,"ln":ln,"pn":pn}));
             navigate('/Events')
             }
            else {

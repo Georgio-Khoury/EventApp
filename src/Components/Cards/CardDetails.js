@@ -1,14 +1,23 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import {Navigation} from '../Navigation'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './CardDetails.css'
 
 function CardDetails() {
+  const navigate = useNavigate()
+  const user = JSON.parse(localStorage.getItem('user'));
+  useEffect(()=>{
+    if(!user){
+      navigate("/")
+    }
+  })
+  
     console.log(useParams())
     const [errormsg, seterrormsg] = useState("");
     const {eventName,location,price,picture,capacity}= useParams()
-    const user = JSON.parse(localStorage.getItem('user'));
+    
     const username = user.name
     console.log(picture)
     console.log({location})

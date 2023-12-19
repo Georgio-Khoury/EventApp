@@ -1,19 +1,27 @@
-import React ,{useState} from 'react'
+import React ,{useEffect, useState} from 'react'
 import { Navigation } from './Navigation'
 import { useNavigate } from 'react-router-dom'
 
 function Subscription() {
   const navigate = useNavigate()
   const subnum=1
+  const userObject = JSON.parse(localStorage.getItem('user'));
+  useEffect(()=>{
+    if(!userObject){
+      navigate("/")
+    }
+  },[])
+  
   //const [username, setusername] = useState();
   const [phone, setphone] = useState();
   const [message, setmessage] = useState();
   const [email, setemail] = useState();
-  const userObject = JSON.parse(localStorage.getItem('user'));
-  const username = userObject.name
+  
+  
+  
  async function subscribe(e){
   e.preventDefault()
-  
+  const username = userObject.name
   
       const response = await fetch('http://127.0.0.1:5000/addSubscription',
       {

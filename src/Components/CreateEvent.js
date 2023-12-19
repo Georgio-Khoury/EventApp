@@ -4,22 +4,31 @@ import './CreateEvent.css'
 import { useNavigate } from 'react-router-dom'
 
 function CreateEvent() {
+  const navigate = useNavigate()
+  const userObject = JSON.parse(localStorage.getItem('user'));
+  useEffect(()=>{
+    if(!userObject){
+      navigate("/")
+    }
+  })
   const [errorMsg, seterrorMsg] = useState("");
   const [Eventname,seteventName] = useState("")
   const [eventDate,seteventDate] = useState("")
   const [price,setPrice]= useState(0);
+  const [endtime, setendtime] = useState();
 const [venuename,setVenue]= useState('')
 const [pn,setpn] = useState('')
   const [location, setlocation] = useState('');
   const [date, setdate] = useState();
   const [time, settime] = useState('');
+  
   //const [status,setstatus]= useState('')
   // const [capacity, setcapacity] = useState();
   //const [username,setusername] = useState('')
-  const userObject = JSON.parse(localStorage.getItem('user'));
-  const username = userObject.name
-  const status = userObject.status
-  const navigate = useNavigate()
+  if(userObject){
+  var username = userObject.name
+  var status = userObject.status
+  }
  
   
  
@@ -33,7 +42,7 @@ const [pn,setpn] = useState('')
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
     },
-    body: JSON.stringify({eventDate,pn,Eventname,venuename,time,price,username,status}),
+    body: JSON.stringify({eventDate,Eventname,venuename,time,endtime,price,username,status}),
 
   })
   const data = await response.json()
@@ -90,14 +99,14 @@ const [pn,setpn] = useState('')
           onChange={(e) => setVenue(e.target.value)}
         />
       </div>
-      <div>
+      {/* <div>
         <label>Phone Number:</label>
         <input
           type="text"
           value={pn}
           onChange={(e) => setpn(e.target.value)}
         />
-      </div>
+      </div> */}
       {/* <div>
         <label>Location:</label>
         <input
@@ -113,6 +122,14 @@ const [pn,setpn] = useState('')
           type="time"
           value={time}
           onChange={(e) => settime(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>End Time:</label>
+        <input
+          type="time"
+          value={endtime}
+          onChange={(e) => setendtime(e.target.value)}
         />
       </div>
       <div>

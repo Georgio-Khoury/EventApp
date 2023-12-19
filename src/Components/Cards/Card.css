@@ -29,4 +29,8 @@
     margin-top: 10px;
     margin-left: 10px;
   }
-  
+  .buttoncontainer{
+    display : flex;
+    justify-content: center;
+    align-items: center;
+  }

@@ -7,22 +7,26 @@ import {Link,useNavigate} from 'react-router-dom'
     const [errormsg, seterrormsg] = useState();
     const [password,setPassword] = useState("");
     const [confirm,setConfirm] = useState("");
+    const [email, setemail] = useState();
     const [dob, setdob] = useState("");
+    const [pn, setpn] = useState();
+    const [fn, setfn] = useState();
+  const [ln, setln] = useState();
     const navigate = useNavigate("");
     const handleSubmit= async (e)=>{
         e.preventDefault()
-            const response = await fetch("http://127.0.0.1:5000/addEPlanner",{
+            const response = await fetch("http://127.0.0.1:5000/addEUser",{
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*',
                   },
-                  body: JSON.stringify({username,password,dob})
+                  body: JSON.stringify({username,password,dob,email,pn,fn,ln})
             })
             const data = await response.json()
             if(response.ok)
             if(data===true){
-            navigate('/Account')
+            navigate('/')
             }else{
                 seterrormsg(data)
             }
@@ -33,6 +37,20 @@ import {Link,useNavigate} from 'react-router-dom'
     <div className='form login'>
     <header>Create Account</header>
     <form onSubmit={handleSubmit}>
+    <div className='field'>
+            <input type="text"
+             placeholder="FirstName"
+             className="input"
+             value={fn}   
+             onChange={(e)=>{setfn(e.target.value)}}
+            /></div>
+             <div className='field'>
+            <input type="text"
+             placeholder="LastName"
+             className="input"
+             value={ln}   
+             onChange={(e)=>{setln(e.target.value)}}
+            /></div>
         <div className='field'>
             <input type="text"
              placeholder="Username"
@@ -55,6 +73,30 @@ import {Link,useNavigate} from 'react-router-dom'
              className="newpassword"
              value={confirm}   
              onChange={(e)=>{setConfirm(e.target.value)}}
+            />
+        </div>
+        <div className='field'>
+            <input type="date"
+             placeholder="Date of Birth"
+             
+             value={dob}   
+             onChange={(e)=>{setdob(e.target.value)}}
+            />
+        </div>
+        <div className='field'>
+            <input type="text"
+             placeholder="email"
+             className="email"
+             value={email}   
+             onChange={(e)=>{setemail(e.target.value)}}
+            />
+        </div>
+        <div className='field'>
+            <input type="text"
+             placeholder="Phone Number"
+             className="pn"
+             value={pn}   
+             onChange={(e)=>{setpn(e.target.value)}}
             />
         </div>
         <div class="field button-field">

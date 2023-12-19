@@ -16,8 +16,8 @@ def connect_to_database():
         db = mysql.connector.connect(
             host="localhost",
             user="root",
-            passwd="Gkgkgk03847738!",
-            database="EventPlanner"
+            passwd="",
+            database="App"
         )
         print("Connected to the database successfully.")
         return db
@@ -136,7 +136,7 @@ def getEUserPass(username):
             
             # Execute the SELECT query
             my_cursor.execute("SELECT password FROM EUSER WHERE username = %s", (username,))
-
+           # my_cursor.execute(f"SELECT password FROM EUSER WHERE username = {username}") #i was trying sql injections lol
             # Fetch the result
             euser = my_cursor.fetchone()
             
@@ -172,7 +172,7 @@ def getEUsername(username):
 
             # Execute the SELECT query
             my_cursor.execute("SELECT username FROM EUSER WHERE username = %s", (username,))
-
+            #my_cursor.execute(f"SELECT username FROM EUSER WHERE username = {username}") i was trying sql injections lol
             # Fetch the result
             euser = my_cursor.fetchone()
 
@@ -264,21 +264,30 @@ def addEvent():
             print('got')
             date = data.get('eventDate')
             time = data.get('time')
+            endtime=data.get('endtime')
             venuename= data.get('venuename')
             price = data.get('price')
-            phoneNumber = data.get('pn')
+            #phoneNumber = data.get('pn')
             
             plannerusername = data.get('username')
             print(plannerusername) 
-            
+            if time > endtime:
+                return jsonify('Start time is after end time')
             db = connect_to_database()
             print('done')
             if db is not None:
-                    my_cursor = db.cursor()
+                    try:    
+                        my_cursor = db.cursor()
+                        my_cursor.execute(f"SELECT COUNT(*) AS DUP FROM EVENT NATURAL JOIN VENUE GROUP BY VENUENAME,DATE,TIME,ENDTIME HAVING TIME BETWEEN '{time}' AND '{endtime}' AND VENUENAME='{venuename}' ")
+                    
+                        checker=my_cursor.fetchall()
+                        print("checker",checker)
+                        if(checker):
+                            return jsonify('Not an available time slot')
 
-                
 
-                
+                    except Exception as e:
+                        logging.error(str(e))
                     # Check if the date is not in the past
                     current_date = datetime.now().date()
                     print(date)
@@ -286,18 +295,20 @@ def addEvent():
                     provided_date = datetime.strptime(date, "%Y-%m-%d").date()
 
                     if current_date <= provided_date:
+                       
+                        my_cursor.execute("select phonenumber from eplanner where plannerusername = %s",(plannerusername,))
+                        phoneNumberTupple = my_cursor.fetchone()
+                        phoneNumber = phoneNumberTupple[0]
                         print(phoneNumber)
                         # Check constraints for phoneNumber
-                        if is_valid_phone_number(phoneNumber):
-                            print('in')
+                        
                             # Insert data into the EVENT table
-                            my_cursor.execute("INSERT INTO EVENT (eventname,date,time,price,phoneNumber,venuename,plannerusername) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                                            (eventname,date,time,price,phoneNumber,venuename,plannerusername))
-                            db.commit()
-                            print("Data inserted into EVENT table.")
-                            return jsonify(True)
-                        else:
-                            return jsonify("Error: Invalid phoneNumber format.")
+                        my_cursor.execute("INSERT INTO EVENT (eventname,date,time,endtime,price,phoneNumber,venuename,plannerusername) VALUES (%s, %s, %s, %s, %s, %s, %s,%s)",
+                                            (eventname,date,time,endtime,price,phoneNumber,venuename,plannerusername))
+                        db.commit()
+                        print("Data inserted into EVENT table.")
+                        return jsonify(True)
+                    
                             
                     else:
                         return jsonify("Error: The provided date is in the past.")
@@ -393,6 +404,168 @@ def getevents():
     except Exception as e:
         logging.error("error from databse",str(e))
     return jsonify("Failed to fetch")        
+
+
+@app.route("/getMyevents/<username>",methods=["GET"])
+def getMyevents(username):
+    try:
+       db= connect_to_database()
+       if db is not None:
+           cursor=db.cursor()
+           cursor.execute('SELECT eventname,time,date,price,phonenumber,venuename,location,capacity FROM EVENT NATURAL JOIN VENUE where plannerusername=%s',(username,))
+           data = cursor.fetchall()
+          
+           formatted_data = []
+           for row in data:
+                row = list(row)  # Convert tuple to list to modify elements
+
+                # Assuming the timedelta field is in the second index (modify this according to your schema)
+                if isinstance(row[1], timedelta):
+                    # Extract time component from timedelta as string
+                    time_seconds = row[1].seconds
+                    hours = time_seconds // 3600
+                    minutes = (time_seconds % 3600) // 60
+                    #seconds = time_seconds % 60
+
+                    formatted_time = f"{hours:02}:{minutes:02}"  # Format time as HH:MM:SS
+
+                    row[1] = formatted_time  # Assuming the time is at the second index in the row
+                if isinstance(row[2], date):
+                    # Format date as MM DD, YY
+                    formatted_date = row[2].strftime('%B %d, %Y')
+                    row[2] = formatted_date
+                formatted_data.append(row)
+
+           return jsonify(formatted_data)
+    except Exception as e:
+        logging.error("error from databse",str(e))
+    return jsonify("Failed to fetch") 
+
+
+@app.route("/addEUser",methods=["POST"])
+def registration():
+    try:
+        data = request.get_json()
+        firstname = data.get('fn')
+        lastname = data.get('ln')
+        username = data.get('username')
+        password= data.get('password')
+        dob = data.get('dob')
+        email = data.get('email')
+        pn = data.get('pn')
+        db=connect_to_database()
+        joindate  = datetime.now().strftime('%Y-%m-%d')
+        if db is not None :
+            cursor = db.cursor()
+            cursor.execute("INSERT INTO EUSER (firstname,lastname,dateofbirth,phonenb,email,username,password,joindate) VALUES(%s,%s,%s,%s,%s,%s,%s,%s)"
+                           ,(firstname,lastname,dob,pn,email,username,password,joindate))
+            db.commit()
+            return jsonify(True)
+    except Exception as e:
+          logging.error(str(e))  
+    return jsonify(False)
+
+
+@app.route("/fn",methods=['POST'])
+def fn():
+    data = request.get_json()
+    username = data.get('username')
+    try:
+        db=connect_to_database()
+        if db is not None:
+            cursor = db.cursor()
+            cursor.execute("SELECT firstname from EUSER where username = %s",(username,))
+            fn = cursor.fetchone()
+            return jsonify(fn)
+
+    except Exception as e:
+        logging.error(str(e))
+        return jsonify('failed to fetch')
+    return jsonify("error getting data")
+
+@app.route("/ln",methods=['POST'])
+def ln():
+    data = request.get_json()
+    username = data.get('username')
+    try:
+        db=connect_to_database()
+        if db is not None:
+            cursor = db.cursor()
+            cursor.execute("SELECT lastname from EUSER where username = %s",(username,))
+            ln = cursor.fetchone()
+            return jsonify(ln)
+
+    except Exception as e:
+        logging.error(str(e))
+        return jsonify('failed to fetch')
+    return jsonify("error getting data")
+
+
+@app.route("/pn",methods=['POST'])
+def pn():
+    data = request.get_json()
+    username = data.get('username')
+    try:
+        db=connect_to_database()
+        if db is not None:
+            cursor = db.cursor()
+            cursor.execute("SELECT phonenb from EUSER where username = %s",(username,))
+            pn = cursor.fetchone()
+            return jsonify(pn)
+
+    except Exception as e:
+        logging.error(str(e))
+        return jsonify('failed to fetch')
+    return jsonify("error getting data")
+
+@app.route('/getServices')
+def getServices():
+    try:
+        db = connect_to_database()
+        if db is not None:
+            cursor = db.cursor()
+            cursor.execute("select provider from Services")
+            data = cursor.fetchall()
+            return jsonify(data)
+    except Exception as e:
+        logging.error(str(e))
+        return jsonify("Failed")
+    return jsonify(False)
+
+@app.route('/addServes',methods=['POST'])
+def addServes():
+    data = request.get_json()
+    eventname = data.get('eventName')
+    provider = data.get('provider')
+    print(provider)
+    try:
+        db =connect_to_database()
+        cursor= db.cursor()
+        cursor.execute('Insert INTO SERVES(provider,eventName) VALUES (%s,%s)',(provider,eventname))
+        db.commit()
+
+    except Exception as e:
+        logging.error(str(e))    
+        return jsonify('Failed')
+    return jsonify(True)
+
+@app.route('/deleteEvent',methods=['POST'])
+def deleteEvent():
+    data= request.get_json()
+    eventname = data.get('eventName')
+    
+    try:
+        db = connect_to_database()
+        cursor = db.cursor()
+        cursor.execute("DELETE FROM EVENT WHERE  eventname=(%s)",(eventname,))
+        db.commit()
+
+    except Exception as e:
+        logging(str(e))
+        return jsonify('Failed')
+    return jsonify('True')
+
+
 
 if __name__=="__main__":
     app.run(debug=True)    

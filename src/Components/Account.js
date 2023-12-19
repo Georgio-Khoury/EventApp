@@ -3,28 +3,42 @@ import { Navigation } from './Navigation'
 import { useNavigate } from 'react-router-dom'
 
 function Account() {
+  const navigate = useNavigate()
   const [firstname, setfirstname] = useState('');
   const [lastname,setlastname] = useState('')
   const userObject = JSON.parse(localStorage.getItem('user'));
-  const status = userObject.status
+  var status,fn,ln
+  if(userObject){
+    status = userObject.status
+    fn = userObject.fn
+    ln = userObject.ln
+    }
+
+  
+  
   useEffect(
     ()=>{
+
       
-      const getuser = async ()=>{
-      const response = fetch('http://127.0.0.1:5000/getEUser',{
-        method:"GET",
-        headers:{
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      },[])
+      const check = async ()=>{
+      // const response = fetch('http://127.0.0.1:5000/getEUser',{
+      //   method:"GET",
+      //   headers:{
+      //     'Content-Type': 'application/json',
+      //     'Access-Control-Allow-Origin': '*',
+      //   },
+      // })
+      if(!userObject){
+          navigate('/')
+        }
 
       
 
       
     }
+    check()
   },[])
-  const navigate = useNavigate()
+ 
   const logout= async (e) =>{
       e.preventDefault()
       const response = await fetch('http://127.0.0.1:5000/logout',{
@@ -50,7 +64,7 @@ function Account() {
     <div>
         <Navigation />
         <div className='content'>
-          <h1>Welcome,{firstname} {lastname}</h1>
+          <h1>Welcome, {fn} {ln}</h1>
           {status&&<h1>You are subscribed</h1>}
           <button onClick={logout}>Logout</button>
         </div>
