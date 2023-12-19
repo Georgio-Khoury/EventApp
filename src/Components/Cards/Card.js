@@ -20,6 +20,7 @@ const Card = ({ event }) => {
           <img src={picture} alt={event.name} className="event-picture" />
           <div className="event-details">
             <h2>{event.name}</h2>
+            <p>Remaining Places : {event.remaining}</p>
             
            
           </div>

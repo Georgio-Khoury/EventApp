@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import { Navigation } from './Navigation'
 import { useNavigate } from 'react-router-dom'
-
+import './Account.css'
 function Account() {
   const navigate = useNavigate()
   const [firstname, setfirstname] = useState('');

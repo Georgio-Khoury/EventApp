@@ -27,7 +27,7 @@ const MyCard = ({ event }) => {
   return (
     <div className="cards-container" >
       {event.map((event, index) => (
-        <div>
+        
         <div key={index} className="card" onClick={()=>handleclick(event.name,event.location,event.price,picture,event.capacity)}>
           <img src={picture} alt={event.name} className="event-picture" />
           <div className="event-details">
@@ -35,7 +35,7 @@ const MyCard = ({ event }) => {
             
             
           </div>
-        </div>
+        
         
        </div>
       ))}
