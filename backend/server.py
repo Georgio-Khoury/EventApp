@@ -27,80 +27,13 @@ def connect_to_database():
 
 
 
-@app.route('/db')
-def index():
-    try:
-        conn = connect_to_database()
-        if conn.is_connected():
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM eplanner')  # Replace 'your_table' with your table name
-            data = cursor.fetchall()
-            cursor.close()
-            conn.close()
-            return str(data)
-    except mysql.connector.Error as e:
-        return f"Error connecting to MySQL: {e}"    
-    
 
-@app.route('/postings', methods=['POST'])
-def handle_post_request():
-     if request.method == 'POST':
-        try:
-            data = request.get_json()  
-            firstname = data.get('firstname')
-            lastname = data.get('lastname')
-            username = data.get('username')
-            password = data.get('password')
-            email = data.get('email')
-            pn = data.get('pn')
 
-            conn = connect_to_database()
-            if conn.is_connected():
-                cursor = conn.cursor()
 
-                # SQL query to insert data into the database
-                sql_query = 'INSERT INTO EUSER VALUES (99,%s, %s,"02-02-2003", %s, %s, %s, %s,10,"03-02-2004",null)'
-                values = (firstname, lastname,pn,email, username, password)
-                print(sql_query,values)
-                cursor.execute(sql_query, values)  # Execute the query with provided values
-                conn.commit()  # Commit the transaction
-
-                cursor.close()
-                conn.close()
-
-                return jsonify({'message': 'Data inserted successfully'}), 200
-        except mysql.connector.Error as e:
-            return jsonify({'error': 'Error inserting data into database: ' + str(e)}), 500
-        except Exception as ex:
-            return jsonify({'error': 'Unhandled exception: ' + str(ex)}), 500
-     else:
-        return jsonify({'message': 'Method not allowed'}), 405
                
 
             
       
-@app.route('/posting',methods=['POST'])
-def postings():
-    try:
-        conn=connect_to_database()
-        if conn.is_connected():
-            
-            cursor=conn.cursor()
-            #conn.start_transaction()
-            values = ( 17,"nnns","+961 05040303","wtvsr","private","fsff@gmail.com")
-            conn.start_transaction()           
-            cursor.execute('INSERT INTO EPLANNER VALUES(17,"nnns","+961 05040303","wtvsr","private","fsff@gmail.com")')
-            conn.commit()
-           
-            cursor.close()
-            conn.close()
-            
-            return "ok"
-            
-    except mysql.connector.Error as e:
-        error_msg = 'Unhandled exception: ' + str(e)
-        logging.error(error_msg)
-        return jsonify({'error nig': error_msg}), 500  
 
 @app.route("/auth",methods=['POST'])
 def authentication():
@@ -116,7 +49,7 @@ def authentication():
         if getEUserPass(username)==password:
             insertinsession(username)
             
-            return jsonify(True) #login
+            return jsonify(True) 
         else:
             print('wrong password')
             return jsonify("Wrong pass")
@@ -124,20 +57,20 @@ def authentication():
         print('no such username')
         return jsonify("Wrong username")
 
-#@app.route('/getEuserPass')
+
 def getEUserPass(username):
-    # Connect to the database
+   
     db = connect_to_database()
 
     if db is not None:
         try:
-            # Create a cursor
+            
             my_cursor = db.cursor(dictionary=True)
             
-            # Execute the SELECT query
+           
             my_cursor.execute("SELECT password FROM EUSER WHERE username = %s", (username,))
            # my_cursor.execute(f"SELECT password FROM EUSER WHERE username = {username}") #i was trying sql injections lol
-            # Fetch the result
+            
             euser = my_cursor.fetchone()
             
             if euser:
@@ -150,30 +83,29 @@ def getEUserPass(username):
         except Exception as e:
             print(f"Error getting EUSER: {e}")
         finally:
-            # Close the cursor and database connection
+           
             if my_cursor:
                 my_cursor.close()
 
-            # Close the database connection
-            #close_database_connection(db)
+          
 
     else:
         print("Error: Database connection is None.")    
 
-#@app.route('/getEusername')
+
 def getEUsername(username):
-    # Connect to the database
+    
     db = connect_to_database()
 
     if db is not None:
         try:
-            # Create a cursor
+            
             my_cursor = db.cursor(dictionary=True)
 
-            # Execute the SELECT query
+           
             my_cursor.execute("SELECT username FROM EUSER WHERE username = %s", (username,))
             #my_cursor.execute(f"SELECT username FROM EUSER WHERE username = {username}") i was trying sql injections lol
-            # Fetch the result
+            
             euser = my_cursor.fetchone()
 
             if euser:
@@ -186,12 +118,11 @@ def getEUsername(username):
         except Exception as e:
             print(f"Error getting EUSER: {e}")
         finally:
-            # Close the cursor and database connection
+            
             if my_cursor:
                 my_cursor.close()
 
-            # Close the database connection
-            #close_database_connection(db)
+          
 
     else:
         print("Error: Database connection is None.")
@@ -267,7 +198,7 @@ def addEvent():
             endtime=data.get('endtime')
             venuename= data.get('venuename')
             price = data.get('price')
-            #phoneNumber = data.get('pn')
+           
             
             plannerusername = data.get('username')
             print(plannerusername) 
@@ -288,7 +219,7 @@ def addEvent():
 
                     except Exception as e:
                         logging.error(str(e))
-                    # Check if the date is not in the past
+                  
                     current_date = datetime.now().date()
                     print(date)
                     print(current_date)
@@ -300,9 +231,7 @@ def addEvent():
                         phoneNumberTupple = my_cursor.fetchone()
                         phoneNumber = phoneNumberTupple[0]
                         print(phoneNumber)
-                        # Check constraints for phoneNumber
                         
-                            # Insert data into the EVENT table
                         my_cursor.execute("INSERT INTO EVENT (eventname,date,time,endtime,price,phoneNumber,venuename,plannerusername) VALUES (%s, %s, %s, %s, %s, %s, %s,%s)",
                                             (eventname,date,time,endtime,price,phoneNumber,venuename,plannerusername))
                         db.commit()
@@ -381,21 +310,21 @@ def getevents():
           
            formatted_data = []
            for row in data:
-                row = list(row)  # Convert tuple to list to modify elements
+                row = list(row)  
 
-                # Assuming the timedelta field is in the second index (modify this according to your schema)
+                
                 if isinstance(row[1], timedelta):
-                    # Extract time component from timedelta as string
+                   
                     time_seconds = row[1].seconds
                     hours = time_seconds // 3600
                     minutes = (time_seconds % 3600) // 60
                     #seconds = time_seconds % 60
 
-                    formatted_time = f"{hours:02}:{minutes:02}"  # Format time as HH:MM:SS
+                    formatted_time = f"{hours:02}:{minutes:02}"  
 
-                    row[1] = formatted_time  # Assuming the time is at the second index in the row
+                    row[1] = formatted_time  
                 if isinstance(row[2], date):
-                    # Format date as MM DD, YY
+                    
                     formatted_date = row[2].strftime('%B %d, %Y')
                     row[2] = formatted_date
                 formatted_data.append(row)
@@ -417,21 +346,21 @@ def getMyevents(username):
           
            formatted_data = []
            for row in data:
-                row = list(row)  # Convert tuple to list to modify elements
+                row = list(row)  
 
-                # Assuming the timedelta field is in the second index (modify this according to your schema)
+                
                 if isinstance(row[1], timedelta):
-                    # Extract time component from timedelta as string
+                    
                     time_seconds = row[1].seconds
                     hours = time_seconds // 3600
                     minutes = (time_seconds % 3600) // 60
                     #seconds = time_seconds % 60
 
-                    formatted_time = f"{hours:02}:{minutes:02}"  # Format time as HH:MM:SS
+                    formatted_time = f"{hours:02}:{minutes:02}"  
 
-                    row[1] = formatted_time  # Assuming the time is at the second index in the row
+                    row[1] = formatted_time  
                 if isinstance(row[2], date):
-                    # Format date as MM DD, YY
+                    
                     formatted_date = row[2].strftime('%B %d, %Y')
                     row[2] = formatted_date
                 formatted_data.append(row)
