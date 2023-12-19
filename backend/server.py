@@ -534,5 +534,18 @@ def checkcapacity(eventname):
             else:
              return True
 
+@app.route('/getvenues')
+def getVenues():
+    try:
+        db= connect_to_database()
+        cursor = db.cursor()
+        cursor.execute("SELECT VENUENAME FROM VENUE")
+        data = cursor.fetchall()
+        return jsonify(data)
+    except Exception as e:    
+        logging.error(str(e))
+        return jsonify(False)
+    
+
 if __name__=="__main__":
     app.run(debug=True)    

@@ -4,6 +4,7 @@ import './Navigation.css'
 export const Navigation = ()=>{
     
     var obj = JSON.parse(localStorage.getItem('user'))
+    if(obj)
     var status = obj.status
     return(
             <div className="navbar">

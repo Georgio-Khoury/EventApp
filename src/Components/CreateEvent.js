@@ -2,6 +2,7 @@ import React,{useEffect, useState} from 'react'
 import { Navigation } from './Navigation'
 import './CreateEvent.css'
 import { useNavigate } from 'react-router-dom'
+import { getValue } from '@testing-library/user-event/dist/utils'
 
 function CreateEvent() {
   const navigate = useNavigate()
@@ -10,13 +11,30 @@ function CreateEvent() {
     if(!userObject){
       navigate("/")
     }
-  })
+    const getvenues = async ()=>{
+      const response = await fetch('http://127.0.0.1:5000/getvenues',{
+        method:"GET",
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
+      })
+      const data = await response.json()
+      if(response.ok){
+        const op =  data.map((opp)=>{
+          return {label:opp[0]}
+     })
+        setoptions(op)
+      }
+    }
+  getvenues()},[])
   const [errorMsg, seterrorMsg] = useState("");
   const [Eventname,seteventName] = useState("")
   const [eventDate,seteventDate] = useState("")
   const [price,setPrice]= useState(0);
   const [endtime, setendtime] = useState();
 const [venuename,setVenue]= useState('')
+const [options, setoptions] = useState([]);
 const [pn,setpn] = useState('')
   const [location, setlocation] = useState('');
   const [date, setdate] = useState();
@@ -49,7 +67,7 @@ const [pn,setpn] = useState('')
   console.log(data)
   if(response.ok){
     if(data===true){
-    
+      
       navigate('/Events')
     }
     else{
@@ -91,14 +109,23 @@ const [pn,setpn] = useState('')
         />
       </div>
       {/* Other input fields for the remaining variables */}
-      <div>
+      {/* <div>
         <label>Venue:</label>
         <input
           type="text"
           value={venuename}
           onChange={(e) => setVenue(e.target.value)}
         />
-      </div>
+      </div> */}
+      <div>
+        <label>Venue:</label>
+       <select id="dropdown" value={venuename} onChange={(e)=>{setVenue(e.target.value)}}>
+          <option value="">Please select</option>
+          {options.map((option, index) => (
+            <option key={index} >{option.label}</option>
+          ))}
+        </select>
+        </div>
       {/* <div>
         <label>Phone Number:</label>
         <input
