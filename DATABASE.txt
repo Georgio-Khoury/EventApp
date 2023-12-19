@@ -1,0 +1,100 @@
+CREATE TABLE `eplanner` (
+  `plannerUsername` varchar(250) NOT NULL,
+  
+  `phoneNumber` varchar(15) DEFAULT NULL,
+  
+
+  `email` varchar(255) DEFAULT NULL,
+  subnum varchar(255) NOT NULL,
+  PRIMARY KEY (`plannerUsername`),
+  FOREIGN KEY (subnum) REFERENCES SUBSCRIPTION(subnum),
+  
+  
+  CONSTRAINT `eplanner_chk_3` CHECK (regexp_like(`email`,_utf8mb4'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')),
+  CONSTRAINT `eplanner_chk_phone` CHECK ((`phoneNumber` like _utf8mb4'+961 ________'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+;
+
+CREATE TABLE SUBSCRIPTION(
+	subnum varchar(255),
+    price decimal(10,0),
+    PRIMARY KEY (subnum)
+    );
+   
+CREATE TABLE EUser(
+`firstName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
+  `dateOfBirth` date NOT NULL,
+  `phonenb` varchar(15) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+ 
+  `joindate` date NOT NULL,
+  
+  PRIMARY KEY (`username`),
+ 
+  
+  
+ 
+  CONSTRAINT `euser_chk_2` CHECK ((`phonenb` like _utf8mb4'+961 ________')),
+  CONSTRAINT `euser_chk_3` CHECK (regexp_like(`email`,_utf8mb4'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci  ;
+
+CREATE TABLE `venue` (
+  `venuename` varchar(250) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `capacity` int NOT NULL,
+  primary key(venuename)
+ 
+ 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci  ;
+
+CREATE TABLE EVENT(
+`Eventname` varchar(250) NOT NULL,
+  
+  `date` date NOT NULL,
+  `time` time NOT NULL,
+  
+  `price` varchar(255) NOT NULL,
+  `phoneNumber` varchar(15) DEFAULT NULL,
+  venuename varchar(250) NOT NULL,
+  plannerusername varchar(250) NOT NULL,
+  foreign key(plannerusername) references EPLANNER(plannerusername),
+  foreign key (venuename) references VENUE(venuename),
+  PRIMARY KEY (`Eventname`),
+ 
+  
+  CONSTRAINT `event_chk_2` CHECK (((`time` >= '00:00:00') and (`time` <= '23:59:59'))),
+  CONSTRAINT `event_chk_3` CHECK ((`phoneNumber` like _utf8mb4'+961 ________'))
+);
+
+CREATE TABLE ENTERTAINMENT(
+entertainmentType varchar(250),
+date  date not null,
+time time not null,
+eventName varchar(250),
+CONSTRAINT `entertainment_chk_1` CHECK (((`TIME` >= '00:00:00') and (`TIME` <= '23:59:59'))),
+foreign key (eventName)  references EVENT(eventname),
+primary key (entertainmenttype,date,time)
+);
+
+CREATE TABLE SERVICES(
+serviceType varchar(250),
+date date not null,
+time time not null,
+eventname varchar(250),
+primary key (servicetype,date,time),
+foreign key (eventname) references event(eventname)
+);
+
+create table registers(
+username varchar(250),
+eventname varchar(250),
+
+foreign key (username) references EUSER(USERNAME),
+FOREIGN KEY (EVENTNAME) REFERENCES EVENT(EVENTNAME)
+)
+;
+ALTER TABLE registers
+ADD CONSTRAINT unique_username_eventname UNIQUE (username, eventname);

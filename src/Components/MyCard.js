@@ -33,7 +33,7 @@ const MyCard = ({ event }) => {
           <div className="event-details">
             <h2>{event.name}</h2>
             
-            <p>Capacity: {event.capacity}</p>
+            
           </div>
         </div>
         

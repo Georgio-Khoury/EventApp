@@ -14,10 +14,11 @@ function CardDetails() {
     }
   })
   
+  
     console.log(useParams())
     const [errormsg, seterrormsg] = useState("");
     const {eventName,location,price,picture,capacity}= useParams()
-    
+    const [rem, setrem] = useState(capacity);
     const username = user.name
     console.log(picture)
     console.log({location})
@@ -37,12 +38,14 @@ function CardDetails() {
         if(data){
             seterrormsg(data)
         }else{
-
+            setrem(prevRem=>prevRem-1)
+            seterrormsg("Successful registration")
         }
 
       }
 
     }
+    
   return (
     <div>
       <Navigation></Navigation>
@@ -52,7 +55,7 @@ function CardDetails() {
         <h2>Location: {location}</h2>
         <h1>Price : {price}</h1>
         <img src={image} alt="no valid image"></img>
-        <p>Capacity : {capacity}</p>
+        <p>Remaining Places : {rem}</p>
         <button className="button" onClick={register}>Register Event</button>
         {errormsg && <p style={{color:'red'}}>{errormsg}</p>}
 

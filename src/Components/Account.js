@@ -66,6 +66,8 @@ function Account() {
         <div className='content'>
           <h1>Welcome, {fn} {ln}</h1>
           {status&&<h1>You are subscribed</h1>}
+          <h1>Events you registered in:</h1>
+          
           <button onClick={logout}>Logout</button>
         </div>
     </div>

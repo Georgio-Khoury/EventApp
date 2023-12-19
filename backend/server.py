@@ -52,10 +52,10 @@ def authentication():
             return jsonify(True) 
         else:
             print('wrong password')
-            return jsonify("Wrong pass")
+            return jsonify("Wrong username or password")
     else:
         print('no such username')
-        return jsonify("Wrong username")
+        return jsonify("Wrong username or password")
 
 
 def getEUserPass(username):
@@ -290,6 +290,8 @@ def register():
         db = connect_to_database()
         if db is not None:
             cursor = db.cursor()
+            if checkcapacity(eventname) is False:
+                return jsonify("No more places available")
             cursor.execute("INSERT INTO REGISTERS(USERNAME,EVENTNAME) VALUES(%s,%s)",(username,eventname))
             db.commit()
     except Exception as ex:
@@ -297,7 +299,7 @@ def register():
         if '1062' in str(ex):
             return jsonify("You are already registered for this event")
 
-    return jsonify(True)
+    return jsonify(False)
 
 @app.route("/getevents",methods=["GET"])
 def getevents():
@@ -307,7 +309,15 @@ def getevents():
            cursor=db.cursor()
            cursor.execute('SELECT eventname,time,date,price,phonenumber,venuename,location,capacity FROM EVENT NATURAL JOIN VENUE')
            data = cursor.fetchall()
-          
+           print(data)
+
+           for index, event in enumerate(data):
+            first_value = event[0]  # Extracting the 1st value from the tuple
+            result = calculateCapacity(first_value)  # Calculating capacity using calculateCapacity method
+            data[index] = event + (result,) 
+
+           print(data)
+            
            formatted_data = []
            for row in data:
                 row = list(row)  
@@ -495,6 +505,34 @@ def deleteEvent():
     return jsonify('True')
 
 
+def calculateCapacity(eventname):
+    try:
+        db=connect_to_database()
+        cursor = db.cursor()
+        print('in')
+        cursor.execute("SELECT CAPACITY FROM VENUE WHERE VENUENAME=(SELECT VENUENAME FROM EVENT WHERE EVENTNAME=%s)",(eventname,))
+        print('out')
+        capacity = cursor.fetchall()[0][0]
+        print(capacity)
+        cursor.execute("SELECT COUNT(*) FROM REGISTERS GROUP BY EVENTNAME HAVING EVENTNAME=%s",(eventname,))
+        taken = cursor.fetchall()
+        
+        if taken:
+            taken =taken[0][0]
+            return int(capacity-taken)
+        else:
+            return capacity    
+    except Exception as e:
+        logging.error(str(e))
+        return jsonify("Failed")
+    
+        
+def checkcapacity(eventname):
+    
+            if calculateCapacity(eventname)<=0:
+                return bool(False)
+            else:
+             return True
 
 if __name__=="__main__":
     app.run(debug=True)    

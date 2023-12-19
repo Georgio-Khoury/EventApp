@@ -50,7 +50,7 @@ function Events() {
         if (response.ok){
           if(data){
            const format= data.map(event => {
-              const [name,time,date,price,pn,venuename,location,capacity] = event
+              const [name,time,date,price,pn,venuename,location,capacity,remaining] = event
               return {
                 name,
                 time,
@@ -59,7 +59,8 @@ function Events() {
                 pn,
                 venuename,
                 location,
-                capacity
+                capacity,
+                remaining
               };
             });
             setevents(format)

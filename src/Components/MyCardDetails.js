@@ -30,7 +30,7 @@ function MyCardDetails() {
 
         }
     getServices()},[])  
-    const {eventName,location,price,picture,capacity}= useParams()
+    const {eventName,location,price,picture,remaining}= useParams()
     const image = atob(picture)
 
     async function addServes(e){
@@ -75,7 +75,7 @@ function MyCardDetails() {
         <h2>Location: {location}</h2>
         <h1>Price : {price}</h1>
         <img src={image} alt="frik"></img>
-        <p>Capacity : {capacity}</p>
+        <p>Remaining Places : {remaining}</p>
         <button onClick={deleteEvent}>Delete Event</button>
         <div>
             <form onSubmit={addServes}>

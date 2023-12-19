@@ -29,7 +29,8 @@ function MyEvents() {
                               pn,
                               venuename,
                               location,
-                              capacity
+                              capacity,
+                            
                             };
                           });
                           setevents(format)
