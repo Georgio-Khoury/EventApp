@@ -2,10 +2,11 @@ import React from 'react'
 import { Navigation } from './Navigation'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 function MyCardDetails() {
     const [provider, setprovider] = useState();
     const [options, setoptions] = useState([]);
-   
+   const navigate = useNavigate()
 
     useState(()=>{
         async function getServices(){
@@ -64,7 +65,10 @@ function MyCardDetails() {
                   body: JSON.stringify({eventName})
 
             })
-
+            if(response.ok){
+              navigate('/MyEvents')
+            }
+          
     }
    
 

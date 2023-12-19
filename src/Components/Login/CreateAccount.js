@@ -15,6 +15,7 @@ import {Link,useNavigate} from 'react-router-dom'
     const navigate = useNavigate("");
     const handleSubmit= async (e)=>{
         e.preventDefault()
+        
             const response = await fetch("http://127.0.0.1:5000/addEUser",{
                 method: "POST",
                 headers: {
@@ -67,14 +68,14 @@ import {Link,useNavigate} from 'react-router-dom'
              onChange={(e)=>{setPassword(e.target.value)}}
             />
         </div>
-        <div className='field'>
+        {/* <div className='field'>
             <input type="password"
              placeholder="Confirm Password"
              className="newpassword"
              value={confirm}   
              onChange={(e)=>{setConfirm(e.target.value)}}
             />
-        </div>
+        </div> */}
         <div className='field'>
             <input type="date"
              placeholder="Date of Birth"
