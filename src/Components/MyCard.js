@@ -7,9 +7,7 @@ const MyCard = ({ event }) => {
   const picture = require('../assets/image.png')
   const navigate = useNavigate();
   
-    const deleteEvent=()=>{
-
-    }
+    
 
     
 
@@ -23,7 +21,7 @@ const MyCard = ({ event }) => {
 
 
   if(!event || !Array.isArray(event) || event.length === 0)
-    return(<h1 className="content">You have no events to be displayed</h1>)
+    return(<h1 className="contentt">You have no events to be displayed</h1>)
   return (
     <div className="cards-container" >
       {event.map((event, index) => (

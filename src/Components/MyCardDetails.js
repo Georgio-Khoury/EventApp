@@ -74,13 +74,13 @@ function MyCardDetails() {
 
   return (
     <div><Navigation />
-    <div className="content">
+    <div className="contentt">
     <h2>Name: {eventName}</h2>
         <h2>Location: {location}</h2>
         <h1>Price : {price}</h1>
         <img src={image} alt="frik"></img>
         <p>Remaining Places : {remaining}</p>
-        <button onClick={deleteEvent}>Delete Event</button>
+        <button className="buttonreg"onClick={deleteEvent}>Delete Event</button>
         <div>
             <form onSubmit={addServes}>
             <select id="dropdown" value={provider} onChange={(e)=>{setprovider(e.target.value)}}>
@@ -89,7 +89,7 @@ function MyCardDetails() {
             <option key={index} >{option.label}</option>
           ))}
         </select>
-            <button style={{ marginRight: '10px' }}>Add Service</button>
+            <button  className="buttonreg"style={{ marginRight: '10px' }}>Add Service</button>
             </form>
        
        

@@ -312,8 +312,8 @@ def getevents():
            print(data)
 
            for index, event in enumerate(data):
-            first_value = event[0]  # Extracting the 1st value from the tuple
-            result = calculateCapacity(first_value)  # Calculating capacity using calculateCapacity method
+            first_value = event[0]  
+            result = calculateCapacity(first_value)  
             data[index] = event + (result,) 
 
            print(data)

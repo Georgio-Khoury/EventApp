@@ -89,10 +89,10 @@ const [pn,setpn] = useState('')
   return (
     <div>
         <Navigation />
-        <div className="createform">
+        <div className="container ">
         <form onSubmit={handleSubmit}>
       
-      <div>
+        <div className='field input'>
         <label>Event Name:</label>
         <input
           type="text"
@@ -100,7 +100,7 @@ const [pn,setpn] = useState('')
           onChange={(e) => seteventName(e.target.value)}
         />
       </div>
-      <div>
+      <div className='field input' style={{marginBottom:'20px',marginTop:'20px'}}>
         <label>Event Date:</label>
         <input
           type="date"
@@ -117,7 +117,7 @@ const [pn,setpn] = useState('')
           onChange={(e) => setVenue(e.target.value)}
         />
       </div> */}
-      <div>
+       <div className='field input' style={{marginBottom:'20px',marginTop:'20px'}}>
         <label>Venue:</label>
        <select id="dropdown" value={venuename} onChange={(e)=>{setVenue(e.target.value)}}>
           <option value="">Please select</option>
@@ -143,7 +143,7 @@ const [pn,setpn] = useState('')
         />
       </div> */}
       
-      <div>
+      <div className='field input' style={{marginBottom:'20px',marginTop:'20px'}}>
         <label>Time:</label>
         <input
           type="time"
@@ -151,7 +151,7 @@ const [pn,setpn] = useState('')
           onChange={(e) => settime(e.target.value)}
         />
       </div>
-      <div>
+      <div className='field input' style={{marginBottom:'20px',marginTop:'20px'}}>
         <label>End Time:</label>
         <input
           type="time"
@@ -159,7 +159,7 @@ const [pn,setpn] = useState('')
           onChange={(e) => setendtime(e.target.value)}
         />
       </div>
-      <div>
+      <div className='field input' style={{marginBottom:'20px',marginTop:'20px'}}>
         <label>Price:</label>
         <input
           type="text"
@@ -167,8 +167,8 @@ const [pn,setpn] = useState('')
           onChange={(e) => setPrice(e.target.value)}
         />
       </div>
-      <div>
-        <button type="submit">Submit</button>
+      <div className='field button'>
+        <button className='buttonreg' style={{backgroundColor:"#6A5ACD"}} type="submit">Submit</button>
       </div>
       {errorMsg && <p style={{color:'red'}}>{errorMsg}</p>}
     </form>

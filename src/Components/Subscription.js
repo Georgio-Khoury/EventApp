@@ -48,15 +48,15 @@ function Subscription() {
   return (
     <>
     <div><Navigation/></div>
-    <div className="content">
+    <div className="contentt">
       <form onSubmit={subscribe}>
-        <div>
+        <div className=''>
         <input type='text' placeholder="Business Phone" value={phone} onChange={(e)=>{setphone(e.target.value)}}></input>
         </div>
         <div>
           <input type='text' placeholder='Business Email' value={email} onChange={(e)=>{setemail(e.target.value)}}></input>
         </div>
-      <button className="Subsribe" onClick={subscribe}>Subscribe</button>
+      <button className="buttonreg" onClick={subscribe}>Subscribe</button>
       {message&&<p>{message}</p>}
       </form>
   

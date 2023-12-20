@@ -49,14 +49,14 @@ function CardDetails() {
   return (
     <div>
       <Navigation></Navigation>
-      <div className='content'>
+      <div className='contentt'>
 
-        <h2>Name: {eventName}</h2>
-        <h2>Location: {location}</h2>
+        <h2 className='nma'>Name: {eventName}</h2>
+        <h2 className='locc'>Location: {location}</h2>
         <h1>Price : {price}</h1>
-        <img src={image} alt="no valid image"></img>
+        <img className="mycardsimg "src={image} alt="no valid image"></img>
         <p>Remaining Places : {rem}</p>
-        <button className="button" onClick={register}>Register Event</button>
+        <button className="buttonreg" onClick={register}>Register Event</button>
         {errormsg && <p style={{color:'red'}}>{errormsg}</p>}
 
         </div>

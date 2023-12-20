@@ -96,6 +96,7 @@ form{
     background-color: #0082f3;
     transition: all 0.3s ease;
     cursor: pointer;
+    margin-top: 10px;
 }
 .field button:hover{
     background-color: #0171d3;
