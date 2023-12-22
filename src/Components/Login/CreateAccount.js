@@ -36,7 +36,7 @@ import {Link,useNavigate} from 'react-router-dom'
  return(
 <div className="container forms">
     <div className='form login'>
-    <header>Create Account</header>
+    <header style={{color:'white'}}>Create Account</header>
     <form onSubmit={handleSubmit}>
     <div className='field'>
             <input type="text"
@@ -101,7 +101,7 @@ import {Link,useNavigate} from 'react-router-dom'
             />
         </div>
         <div class="field button-field">
-            <button>Signup</button>
+            <button >Signup</button>
         </div>
     </form>
     <div className="form-link">

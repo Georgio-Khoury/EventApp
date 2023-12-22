@@ -3,18 +3,18 @@
     color:aliceblue;
 }
 #dropdown {
-    padding: 8px 12px; /* Adjust padding as needed */
-    font-size: 16px; /* Change font size as desired */
-    border: 1px solid #ccc; /* Border color */
-    border-radius: 4px; /* Rounded corners */
-    outline: none; /* Remove default outline */
-    width: 200px; /* Set the width of the dropdown */
-    background-color: #fff; /* Background color */
-    cursor: pointer; /* Show cursor on hover */
+    padding: 8px 12px; 
+    font-size: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    outline: none; 
+    width: 200px; 
+    background-color: #fff; 
+    cursor: pointer; 
   }
   
-  /* Style for dropdown options */
+
   #dropdown option {
-    padding: 8px 12px; /* Adjust padding as needed */
-    font-size: 14px; /* Change font size as desired */
+    padding: 8px 12px; 
+    font-size: 14px; 
   }

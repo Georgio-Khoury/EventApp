@@ -1,35 +1,35 @@
-/* Styles for the sidebar */
+
 .navbar {
-    background-color: #333; /* Background color */
-    width: 250px; /* Set width */
-    height: 100vh; /* Take full height of the viewport */
-    position: fixed; /* Fixed position to stay visible while scrolling */
-    top: 0; /* Align to the top of the viewport */
-    left: 0; /* Align to the left side */
-    padding-top: 20px; /* Add some top padding */
+    background-color: #333; 
+    width: 250px;
+    height: 100vh; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    padding-top: 20px; 
     background: transparent;
   }
   
-  /* Style for the list items */
+
   .navbar ul {
-    list-style: none; /* Remove default list styles */
+    list-style: none; 
     padding: 0;
   }
   
   .navbar ul li {
-    padding: 10px 20px; /* Padding for each list item */
-    font-size: 18px; /* Font size */
+    padding: 10px 20px;
+    font-size: 18px; 
   }
   
   .navbar ul li a {
-    color: #fff; /* Link text color */
-    text-decoration: none; /* Remove underline */
-    transition: color 0.3s ease; /* Smooth transition for color change */
+    color: #fff; 
+    text-decoration: none; 
+    transition: color 0.3s ease; 
   }
   
   .navbar ul li a:hover {
-    color: #ffcc00; /* Change text color on hover */
-    font-weight: bold; /* Add some emphasis on hover */
-    cursor: pointer; /* Show pointer cursor on hover */
+    color: #ffcc00; 
+    font-weight: bold; 
+    cursor: pointer; 
   }
   

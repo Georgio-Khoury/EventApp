@@ -132,7 +132,7 @@ export const LoginForm = () => {
     <section className="container forms">
     <div className="form login">
         <div className="form-content">
-            <header>Login</header>
+            <header style={{color:"white"}}>Login</header>
             <form onSubmit={handleSubmit}>
                 <div className="field input-field">
                     <input 
@@ -160,7 +160,7 @@ export const LoginForm = () => {
                 
 
                 <div className="field button-field">
-                    <button>Login</button>
+                    <button >Login</button>
                 </div>
             </form>
 
