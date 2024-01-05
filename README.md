@@ -3,6 +3,7 @@
 Event App is a simple web application that enables users to reserve a place for an event and event planners to create their event , choose the venue and add services. 
 This application is developed using React.js, Flask and MySQL.
 React.js is a JavaScript library used to build user interfaces. Flask is a Python micro web application framework that provides libraries and tools to build RESTful APIs. MySQL is a database management system.
+The purpose of this project is to showcase my ability to combine Frontend and Backend frameworks and libraries to create full stack applications.
 
 **CREATING AN ACCOUNT**
 
@@ -28,3 +29,10 @@ The user can browse the events and navigate through different pages from the nav
 ![image](https://github.com/Georgio-Khoury/EventApp/assets/99497326/52664274-061f-452b-8eaa-92bcfaf71f91)
 
 The user can click on the Event Cards to register in an Event
+
+**Event Creation**
+
+![image](https://github.com/Georgio-Khoury/EventApp/assets/99497326/11f569b3-cdf6-4741-b29c-922a7812d49b)
+
+Users that subscribe to our app can become event planners and create events.
+
