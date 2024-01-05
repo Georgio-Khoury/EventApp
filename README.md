@@ -10,3 +10,21 @@ React.js is a JavaScript library used to build user interfaces. Flask is a Pytho
 
 The user can create an account, and then be redirected to the Login page.
 
+
+**LOGIN**
+
+![Screenshot 2024-01-05 183159](https://github.com/Georgio-Khoury/EventApp/assets/99497326/fb84a5c8-57cb-4ec3-a470-f44ad40ca4d4)
+
+Upon successful authentication, the user will be redirected to the Events page.
+
+**Events**
+
+![image](https://github.com/Georgio-Khoury/EventApp/assets/99497326/3fd5295b-e597-481a-ae60-682a8f75a1d8)
+
+The user can browse the events and navigate through different pages from the navigation bar.
+
+**Event Registration**
+
+![image](https://github.com/Georgio-Khoury/EventApp/assets/99497326/52664274-061f-452b-8eaa-92bcfaf71f91)
+
+The user can click on the Event Cards to register in an Event
